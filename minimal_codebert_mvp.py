@@ -7,6 +7,8 @@ pipe = pipeline("text-classification", model="DunnBC22/codebert-base-Malicious_U
 # Function to perform analysis on the provided URL
 def analyze_url(url):
     result = pipe(url)
+    if bool(url)==0:
+        return "Error"
     label = result[0]['label']
     score = result[0]['score']
     return f"The URL is classified as {label} with a confidence score of {score:.2%}"
