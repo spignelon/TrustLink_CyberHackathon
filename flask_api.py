@@ -94,7 +94,7 @@ def extract_domains_from_hosts3(hosts_file_path):
 # read domains from file and create a list
 def read_domains_from_file(file_path):
     with open(file_path, 'r') as file:
-        domains_list = [line.strip() for line in file]
+        domains_list = [line.strip() for line in file if not line.startswith(('#', '!'))]
     return domains_list
 
 # extracting domains from host files
@@ -102,6 +102,8 @@ domains1 = extract_domains_from_hosts("data/1.txt")
 domains2 = extract_domains_from_hosts("data/2.txt")
 domains3 = extract_domains_from_hosts3("data/3.txt")
 domains4 = read_domains_from_file("data/4.txt")
+domains5 = read_domains_from_file("data/5.txt")
+domains6 = read_domains_from_file("data/6.txt")
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -138,6 +140,16 @@ def predict():
         for i in domains4:
             if i == extract_domain(url):
                 return jsonify({"label": "malware", "score": 1})
+        
+        # List scam urls https://www.globalantiscam.org/
+        for i in domains5:
+            if i == extract_domain(url):
+                return jsonify({"label": "scam", "score": 1})
+        
+        # List fraud urls by the The Block List Project
+        for i in domains6:
+            if i == extract_domain(url):
+                return jsonify({"label": "fraud", "score": 1})
         
         # huggingface ml
         result = pipe(url)  
