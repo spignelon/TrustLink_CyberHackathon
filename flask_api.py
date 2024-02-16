@@ -71,9 +71,30 @@ for key, value in data.items():
             "threat": item["threat"]
             })
 
+def extract_domains_from_hosts3(hosts_file_path):
+    # Initialize an empty list to store the domains
+    domains_list = []
+
+    # Read the hosts file and extract domains
+    with open(hosts_file_path, 'r') as file:
+        for line in file:
+            # Ignore comments and blank lines
+            if not line.startswith('#') and not line.startswith('!') and line.strip():
+                # Split the line into parts
+                parts = line.split()
+                
+                # Check if there are at least 2 parts in the line
+                if len(parts) >= 2:
+                    # Extract domain from the second part
+                    domain = parts[1]
+                    domains_list.append(domain)
+
+    return domains_list
+
 # extracting domains from host files
 domains1 = extract_domains_from_hosts("data/1.txt")
 domains2 = extract_domains_from_hosts("data/2.txt")
+domains3 = extract_domains_from_hosts3("data/3.txt")
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -99,6 +120,11 @@ def predict():
             
         # malware risk hosts
         for i in domains2:
+            if i == extract_domain(url):
+                return jsonify({"label": "malware", "score": 1})
+        
+        # risk hosts 3
+        for i in domains3:
             if i == extract_domain(url):
                 return jsonify({"label": "malware", "score": 1})
         
