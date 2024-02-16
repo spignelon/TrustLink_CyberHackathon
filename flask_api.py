@@ -97,7 +97,7 @@ def read_domains_from_file(file_path):
         domains_list = [line.strip() for line in file if not line.startswith(('#', '!'))]
     return domains_list
 
-# extracting domains from host files
+# extracting domains from host files into memory
 domains1 = extract_domains_from_hosts("data/1.txt")
 domains2 = extract_domains_from_hosts("data/2.txt")
 domains3 = extract_domains_from_hosts3("data/3.txt")
@@ -179,7 +179,7 @@ def predict():
         result = pipe(url)  
 
         # Return the prediction as JSON
-        return jsonify(result)
+        return jsonify(result[0])
 
     except Exception as e:
         return jsonify({'error': str(e)})
