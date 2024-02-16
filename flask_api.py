@@ -97,6 +97,16 @@ def read_domains_from_file(file_path):
         domains_list = [line.strip() for line in file if not line.startswith(('#', '!'))]
     return domains_list
 
+# malware/malicious domain | phishing/fraud/scam
+def json_array(phishing, malware, benign, defacement):
+    labels_and_scores = [
+        {"label": "phishing", "score": phishing},
+        {"label": "malware", "score": malware},
+        {"label": "benign", "score": benign},
+        {"label": "defacement", "score": defacement}
+    ]
+    return labels_and_scores
+
 # extracting domains from host files into memory
 domains1 = extract_domains_from_hosts("data/1.txt")
 domains2 = extract_domains_from_hosts("data/2.txt")
@@ -121,59 +131,59 @@ def predict():
         # urlhaus abuse.ch
         for i in range(len(extracted_data)):
             if extracted_data[i]['url'] == url:
-                return jsonify({"label": extracted_data[i]['threat'], "score":1})
+                return jsonify(json_array(0, 1, 0, 0))
         
         print(extract_domain(url))
         
         # Dead domain
         for i in domains1:
             if i == extract_domain(url):
-                return jsonify({"label": "Dead Host", "score": 1}) 
+                return jsonify(json_array(0, 0, 0, 1)) 
             
         # malware risk hosts
         for i in domains2:
             if i == extract_domain(url):
-                return jsonify({"label": "malware", "score": 1})
+                return jsonify(json_array(0, 1, 0, 0))
         
         # risk hosts 3
         for i in domains3:
             if i == extract_domain(url):
-                return jsonify({"label": "malware", "score": 1})
+                return jsonify(json_array(0, 1, 0, 0))
         
         # List of Malware Domains 4
         for i in domains4:
             if i == extract_domain(url):
-                return jsonify({"label": "malware", "score": 1})
+                return jsonify(json_array(0, 1, 0, 0))
         
         # List scam urls https://www.globalantiscam.org/
         for i in domains5:
             if i == extract_domain(url):
-                return jsonify({"label": "scam", "score": 1})
+                return jsonify(json_array(1, 0, 0, 0))
         
         # List fraud urls by the The Block List Project
         for i in domains6:
             if i == extract_domain(url):
-                return jsonify({"label": "fraud", "score": 1})
+                return jsonify(json_array(1, 0, 0, 0))
         
         # Cyber Threat Intelligence Feed https://rescure.me/
         for i in domains7:
             if i == extract_domain(url):
-                return jsonify({"label": "malware", "score": 1})
+                return jsonify(json_array(0, 1, 0, 0))
         
         # Community driven malicious domains list by Hexxium Creations
         for i in domains8:
             if i == extract_domain(url):
-                return jsonify({"label": "malware", "score": 1})
+                return jsonify(json_array(0, 1, 0, 0))
         
         # Computer Emergency Response Team of the Republic of Turkey
         for i in domains10:
             if i == extract_domain(url):
-                return jsonify({"label": "malicious", "score": 1})
+                return jsonify(json_array(0, 1, 0, 0))
         
         # Openphish phishing intelligence list
         for i in domains11:
             if i == url:
-                return jsonify({"label": "phishing", "score": 1})
+                return jsonify(json_array(1, 0, 0, 0))
         
         # huggingface ml
         result = pipe(url)  
