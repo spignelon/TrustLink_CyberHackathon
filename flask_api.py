@@ -24,7 +24,7 @@ def download_if_missing(file_url, file_path):
         return False
 
 file_urls = ["https://urlhaus.abuse.ch/downloads/json_online/", "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Dead/hosts", "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts", "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt", "https://raw.githubusercontent.com/stamparm/blackbook/master/blackbook.txt", "https://raw.githubusercontent.com/elliotwutingfeng/GlobalAntiScamOrg-blocklist/main/global-anti-scam-org-scam-urls-pihole.txt", "https://blocklistproject.github.io/Lists/alt-version/fraud-nl.txt", "https://rescure.me/rescure_domain_blacklist.txt", "https://raw.githubusercontent.com/HexxiumCreations/threat-list/gh-pages/hosts.txt", "https://rescure.me/rescure_domain_blacklist.txt", "https://www.usom.gov.tr/url-list.txt", "https://openphish.com/feed.txt", ]
-titles = ["urlhaus abuse.ch", "Dead domain", "Risk hosts", ]
+titles = ["urlhaus abuse.ch", "Dead domain", "Risk hosts", "Anti malware list", "List of Malware Domains"]
 
 def extract_domains_from_hosts(filepath):
   with open(filepath, 'r') as f:
@@ -91,10 +91,17 @@ def extract_domains_from_hosts3(hosts_file_path):
 
     return domains_list
 
+# read domains from file and create a list
+def read_domains_from_file(file_path):
+    with open(file_path, 'r') as file:
+        domains_list = [line.strip() for line in file]
+    return domains_list
+
 # extracting domains from host files
 domains1 = extract_domains_from_hosts("data/1.txt")
 domains2 = extract_domains_from_hosts("data/2.txt")
 domains3 = extract_domains_from_hosts3("data/3.txt")
+domains4 = read_domains_from_file("data/4.txt")
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -110,7 +117,6 @@ def predict():
             if extracted_data[i]['url'] == url:
                 return jsonify({"label": extracted_data[i]['threat'], "score":1})
         
-        print(domains1)
         print(extract_domain(url))
         
         # Dead domain
@@ -125,6 +131,11 @@ def predict():
         
         # risk hosts 3
         for i in domains3:
+            if i == extract_domain(url):
+                return jsonify({"label": "malware", "score": 1})
+        
+        # List of Malware Domains 4
+        for i in domains4:
             if i == extract_domain(url):
                 return jsonify({"label": "malware", "score": 1})
         
