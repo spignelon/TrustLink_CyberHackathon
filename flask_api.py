@@ -24,7 +24,7 @@ def download_if_missing(file_url, file_path):
         return False
 
 file_urls = ["https://urlhaus.abuse.ch/downloads/json_online/", "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Dead/hosts", "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts", "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt", "https://raw.githubusercontent.com/stamparm/blackbook/master/blackbook.txt", "https://raw.githubusercontent.com/elliotwutingfeng/GlobalAntiScamOrg-blocklist/main/global-anti-scam-org-scam-urls-pihole.txt", "https://blocklistproject.github.io/Lists/alt-version/fraud-nl.txt", "https://rescure.me/rescure_domain_blacklist.txt", "https://raw.githubusercontent.com/HexxiumCreations/threat-list/gh-pages/hosts.txt", "https://rescure.me/rescure_domain_blacklist.txt", "https://www.usom.gov.tr/url-list.txt", "https://openphish.com/feed.txt", ]
-titles = ["urlhaus abuse.ch", "Dead domain", "Risk hosts", "Anti malware list", "List of Malware Domains"]
+titles = ["urlhaus abuse.ch", "Dead domain", "Risk hosts", "Anti malware list", "List of Malware Domains", "List scam urls by https://www.globalantiscam.org/", "List fraud urls by the The Block List Project", "Cyber Threat Intelligence Feed https://rescure.me/", "Community driven malicious domains list by Hexxium Creations", "", "Computer Emergency Response Team of the Republic of Turkey", "Openphish phishing intelligence list"]
 
 def extract_domains_from_hosts(filepath):
   with open(filepath, 'r') as f:
@@ -104,6 +104,10 @@ domains3 = extract_domains_from_hosts3("data/3.txt")
 domains4 = read_domains_from_file("data/4.txt")
 domains5 = read_domains_from_file("data/5.txt")
 domains6 = read_domains_from_file("data/6.txt")
+domains7 = read_domains_from_file("data/7.txt")
+domains8 = extract_domains_from_hosts3("data/8.txt")
+domains10 = read_domains_from_file("data/10.txt")
+domains11 = read_domains_from_file("data/11.txt")
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -150,6 +154,26 @@ def predict():
         for i in domains6:
             if i == extract_domain(url):
                 return jsonify({"label": "fraud", "score": 1})
+        
+        # Cyber Threat Intelligence Feed https://rescure.me/
+        for i in domains7:
+            if i == extract_domain(url):
+                return jsonify({"label": "malware", "score": 1})
+        
+        # Community driven malicious domains list by Hexxium Creations
+        for i in domains8:
+            if i == extract_domain(url):
+                return jsonify({"label": "malware", "score": 1})
+        
+        # Computer Emergency Response Team of the Republic of Turkey
+        for i in domains10:
+            if i == extract_domain(url):
+                return jsonify({"label": "malicious", "score": 1})
+        
+        # Openphish phishing intelligence list
+        for i in domains11:
+            if i == url:
+                return jsonify({"label": "phishing", "score": 1})
         
         # huggingface ml
         result = pipe(url)  
