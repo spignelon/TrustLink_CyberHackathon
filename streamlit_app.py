@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 # Function to analyze URL using the API
 def analyze_url(url):
     # Define the URL of your API
-    api_url = "https://45cc-14-139-42-195.ngrok-free.app/predict"
+    api_url = "http://127.0.0.1:5000/predict"
 
     # Define the input data as a dictionary
     data = {
@@ -38,29 +38,12 @@ def analyze_url(url):
     else:
         st.error("Failed to analyze URL. Please try again.")
         return None
-analyze_url("https://google.com")
 
 st.title("URL Classifier")
 st.write("Enter a URL to classify it.")
 
 # Input field for URL
 url = st.text_input("Enter URL", "https://example.com")
-
-# Background image file path
-background_image_path = "image.jpg"
-
-# Define custom CSS styles to set the background image
-custom_css = f"""
-    <style>
-        body {{
-            background-image: url('data:image/png;base64,{background_image_path}');
-            background-size: cover;
-        }}
-    </style>
-"""
-
-# Set the custom CSS styles
-st.markdown(custom_css, unsafe_allow_html=True)
 
 # Button to analyze URL
 if st.button("Analyze"):
