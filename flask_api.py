@@ -3,6 +3,7 @@ from transformers import pipeline
 import os
 import urllib.request
 import json
+# import urlexpander
 
 app = Flask(__name__)
 
@@ -100,8 +101,8 @@ def read_domains_from_file(file_path):
 # malware/malicious domain | phishing/fraud/scam
 def json_array(phishing, malware, benign, defacement):
     labels_and_scores = [
-        {"label": "phishing", "score": phishing},
-        {"label": "malware", "score": malware},
+        {"label": "phishing / fraud", "score": phishing},
+        {"label": "malware / malicious", "score": malware},
         {"label": "benign", "score": benign},
         {"label": "defacement", "score": defacement}
     ]
@@ -127,6 +128,7 @@ def predict():
 
         # Extract the URL from the JSON data
         url = data['url']
+        # url = urlexpander.expand(f'{url}')
         
         # urlhaus abuse.ch
         for i in range(len(extracted_data)):
