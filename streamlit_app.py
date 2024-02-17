@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 # Function to analyze URL using the API
 def analyze_url(url):
     # Define the URL of your API
-    api_url = "https://127.0.0.1:5000/predict"
+    api_url = "http://127.0.0.1:5000/predict"
 
     # Define the input data as a dictionary
     data = {
