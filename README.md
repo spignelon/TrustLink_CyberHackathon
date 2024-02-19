@@ -18,7 +18,7 @@ TrustLink utilizes a combination of static and dynamic analysis to examine URLs 
 - **Transformers Library:** Utilized for the ML model, providing a pre-trained text classification model for analyzing URLs.
 - **Python:** Primary programming language for scripting and backend development.
 - **Streamlit**: Utilized for the web application, allowing users to input URLs and receive classification results.
-- **Tampermonkey Script:** A Tampermonkey script is provided as a Chrome extension, enabling real-time threat detection directly in the browser.
+- **Tampermonkey Script:** A Tampermonkey script is provided for enabling real-time threat detection directly in the browser.
 
 ## Workflow
 1. **User Input:** Users input a URL into the TrustLink web application or Use Tampermonkey Chrome extension for automatic detection and blocking.
