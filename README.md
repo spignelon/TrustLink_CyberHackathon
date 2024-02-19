@@ -34,7 +34,7 @@ TrustLink utilizes a combination of static and dynamic analysis to examine URLs 
 5. Optionally, install the Tampermonkey script in your browser to experience real-time threat detection.
 
 ## Presentation
-For a detailed overview of the TrustLink project, including its objectives, workflow, technology stack, and future aspects, please refer to the [Delhi Police Cyber Hackathon Project Presentation (PDF)](link-to-presentation-pdf).
+For a detailed overview of the TrustLink project, including its objectives, workflow, technology stack, and future aspects, please refer to the [Delhi Police Cyber Hackathon Project Presentation (PDF)](TrustLink_presentation.pdf).
 
 ## Future Prospects
 TrustLink aims to expand its capabilities in the following areas:
